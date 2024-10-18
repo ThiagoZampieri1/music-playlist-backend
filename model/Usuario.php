@@ -1,69 +1,46 @@
 <?php
-
-require_once(__DIR__ . "/../configs/Database.php");
-// Caso seja necessário acessar alguma função global auxiliar.
-require_once(__DIR__ . "/../configs/utils.php");
+require_once(__DIR__ . '/../configs/Database.php');
 
 class Usuario
 {
-
     public static function listar()
     {
-        try {
-            $conexao = Conexao::getConexao();
-            $sql = $conexao->prepare("SELECT * FROM usuarios");
-            $sql->execute();
-
-            return $sql->fetchAll();
-        } catch (Exception $e) {
-            output(500, ["msg" => $e->getMessage()]);
-        }
+        $conexao = Conexao::getConexao();
+        $sql = $conexao->prepare("SELECT id, nome, email FROM usuarios");
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function insert($nome, $data)
+    public static function getById($id)
     {
-        try {
-            $conexao = Conexao::getConexao();
-            $sql = $conexao->prepare("INSERT INTO usuarios(nome, data_nascimento) VALUES (?,?)");
-            $sql->execute([$nome, $data]);
-
-            return $sql->rowCount();
-        } catch (Exception $e) {
-            output(500, ["msg" => $e->getMessage()]);
-        }
+        $conexao = Conexao::getConexao();
+        $sql = $conexao->prepare("SELECT id, nome, email FROM usuarios WHERE id = ?");
+        $sql->execute([$id]);
+        return $sql->fetch(PDO::FETCH_ASSOC);
     }
 
-    public static function getById($id) {}
-
-    public static function exist($id)
+    public static function insert($nome, $email, $senha)
     {
-        try {
-            $conexao = Conexao::getConexao();
-            $sql = $conexao->prepare("SELECT COUNT(*) FROM usuarios WHERE id = ?");
-            $sql->execute([$id]);
-
-            return $sql->fetchColumn();
-        } catch (Exception $e) {
-            output(500, ["msg" => $e->getMessage()]);
-        }
+        $conexao = Conexao::getConexao();
+        $sql = $conexao->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        $sql->execute([$nome, $email, $senhaHash]);
+        return $conexao->lastInsertId();
     }
 
-    public static function deletar($id)
+    public static function update($id, $nome, $email)
     {
-        try {
-            $conexao = Conexao::getConexao();
-            $conexao->beginTransaction();
+        $conexao = Conexao::getConexao();
+        $sql = $conexao->prepare("UPDATE usuarios SET nome = ?, email = ? WHERE id = ?");
+        $sql->execute([$nome, $email, $id]);
+        return $sql->rowCount();
+    }
 
-            $sql = $conexao->prepare("DELETE FROM carros WHERE idUsuario = ?");
-            $sql->execute([$id]);
-
-            $sql = $conexao->prepare("DELETE FROM usuarios WHERE id = ?");
-            $sql->execute([$id]);
-
-            $conexao->commit();
-        } catch (Exception $e) {
-            $conexao->rollback();
-            output(500, ["msg" => $e->getMessage()]);
-        }
+    public static function delete($id)
+    {
+        $conexao = Conexao::getConexao();
+        $sql = $conexao->prepare("DELETE FROM usuarios WHERE id = ?");
+        $sql->execute([$id]);
+        return $sql->rowCount();
     }
 }

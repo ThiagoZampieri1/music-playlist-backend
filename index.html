@@ -2,47 +2,108 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentação do Webservice</title>
+    <title>Documentação do Webservice - Playlists</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1,
+      h2 {
+        color: #2c3e50;
+      }
+      h3 {
+        color: #16a085;
+      }
+      p,
+      ul {
+        font-size: 14px;
+      }
+      code {
+        background-color: #ecf0f1;
+        padding: 2px 4px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Webservice - Playlists</h1>
+    <h1>Webservice REST - Sistema de Playlists</h1>
 
     <h2>Rotas para Usuários</h2>
-    <h3>GET /usuarios</h3>
+
+    <h3>GET /usuarios.php</h3>
     <p>Lista todos os usuários.</p>
 
-    <h3>POST /usuarios</h3>
-    <p>Criar um novo usuário.</p>
+    <h3>GET /usuarios.php?id=<em>ID</em></h3>
+    <p>Obtém os detalhes de um usuário específico.</p>
+
+    <h3>POST /usuarios.php</h3>
+    <p>Cadastra um novo usuário.</p>
+    <p><strong>Parâmetros (JSON):</strong></p>
     <ul>
-      <li><strong>nome:</strong> Nome do usuário (obrigatório).</li>
-      <li><strong>email:</strong> Email do usuário (obrigatório).</li>
-      <li><strong>senha:</strong> Senha do usuário (obrigatório).</li>
+      <li><code>nome</code> (string) - Obrigatório</li>
+      <li><code>email</code> (string) - Obrigatório</li>
+      <li><code>senha</code> (string) - Obrigatório</li>
     </ul>
+
+    <h3>PUT /usuarios.php?id=<em>ID</em></h3>
+    <p>Atualiza os dados de um usuário.</p>
+    <p><strong>Parâmetros (JSON):</strong></p>
+    <ul>
+      <li><code>nome</code> (string) - Obrigatório</li>
+      <li><code>email</code> (string) - Obrigatório</li>
+    </ul>
+
+    <h3>DELETE /usuarios.php?id=<em>ID</em></h3>
+    <p>Exclui um usuário.</p>
+
+    <hr />
 
     <h2>Rotas para Playlists</h2>
-    <h3>GET /playlists</h3>
+
+    <h3>GET /playlists.php</h3>
     <p>Lista todas as playlists.</p>
 
-    <h3>POST /playlists</h3>
-    <p>Cria uma nova playlist.</p>
+    <h3>GET /playlists.php?usuario_id=<em>ID</em></h3>
+    <p>Lista as playlists de um usuário específico.</p>
+
+    <h3>POST /playlists.php</h3>
+    <p>Cadastra uma nova playlist.</p>
+    <p><strong>Parâmetros (JSON):</strong></p>
     <ul>
-      <li><strong>titulo:</strong> Título da playlist (obrigatório).</li>
-      <li>
-        <strong>usuario_id:</strong> ID do usuário criador da playlist
-        (obrigatório).
-      </li>
+      <li><code>titulo</code> (string) - Obrigatório</li>
+      <li><code>descricao</code> (string) - Opcional</li>
+      <li><code>usuario_id</code> (int) - Obrigatório</li>
     </ul>
+
+    <h3>PUT /playlists.php?id=<em>ID</em></h3>
+    <p>Atualiza os dados de uma playlist.</p>
+    <p><strong>Parâmetros (JSON):</strong></p>
+    <ul>
+      <li><code>titulo</code> (string) - Obrigatório</li>
+      <li><code>descricao</code> (string) - Obrigatório</li>
+    </ul>
+
+    <h3>DELETE /playlists.php?id=<em>ID</em></h3>
+    <p>Exclui uma playlist.</p>
+
+    <hr />
 
     <h2>Rotas para Músicas</h2>
-    <h3>GET /musicas?playlist_id={id}</h3>
+
+    <h3>GET /musicas.php?playlist_id=<em>ID</em></h3>
     <p>Lista todas as músicas de uma playlist específica.</p>
 
-    <h3>POST /musicas</h3>
-    <p>Adiciona uma nova música a uma playlist.</p>
+    <h3>POST /musicas.php</h3>
+    <p>Adiciona uma música a uma playlist.</p>
+    <p><strong>Parâmetros (JSON):</strong></p>
     <ul>
-      <li><strong>titulo:</strong> Título da música (obrigatório).</li>
-      <li><strong>link:</strong> Link da música (obrigatório).</li>
+      <li><code>titulo</code> (string) - Obrigatório</li>
+      <li><code>artista</code> (string) - Opcional</li>
+      <li><code>link</code> (string) - Obrigatório</li>
+      <li><code>playlist_id</code> (int) - Obrigatório</li>
     </ul>
+
+    <h3>DELETE /musicas.php?playlist_id=<em>ID</em>&musica_id=<em>ID</em></h3>
+    <p>Remove uma música de uma playlist.</p>
   </body>
 </html>
