@@ -2,108 +2,277 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <title>Documentação do Webservice - Playlists</title>
+    <title>Documentação do Webservice - Sistema de Playlists</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 20px;
+        background-color: #f4f7f9;
+        color: #333;
+        text-align: center;
       }
       h1,
-      h2 {
+      h2,
+      h3 {
         color: #2c3e50;
       }
+      h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+      h2 {
+        border-bottom: 2px solid #16a085;
+        padding-bottom: 5px;
+        margin-top: 40px;
+      }
       h3 {
-        color: #16a085;
+        font-size: 1.5em;
+        margin-top: 30px;
       }
       p,
-      ul {
-        font-size: 14px;
+      ul,
+      li {
+        font-size: 1em;
+        line-height: 1.6;
+        list-style-type: none;
       }
       code {
         background-color: #ecf0f1;
         padding: 2px 4px;
+        font-size: 0.95em;
+        color: #c0392b;
+        border-radius: 3px;
+      }
+      ul {
+        margin-left: 20px;
+      }
+      hr {
+        border: none;
+        height: 1px;
+        background-color: #ddd;
+        margin: 40px 0;
+      }
+      .method {
+        display: inline-block;
+        background-color: #16a085;
+        color: #fff;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-weight: bold;
+        font-size: 0.9em;
+        margin-right: 5px;
+      }
+      .endpoint {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1em;
+        color: #2980b9;
       }
     </style>
   </head>
   <body>
     <h1>Webservice REST - Sistema de Playlists</h1>
 
+    <p>
+      Bem-vindo à documentação da API REST para o sistema de gerenciamento de
+      playlists. Esta API permite que você gerencie usuários, playlists e
+      músicas através de requisições HTTP.
+    </p>
+
+    <hr />
+
     <h2>Rotas para Usuários</h2>
 
-    <h3>GET /usuarios.php</h3>
-    <p>Lista todos os usuários.</p>
+    <h3>
+      <span class="method">GET</span>
+      <span class="endpoint">/usuarios.php</span>
+    </h3>
+    <p>Lista todos os usuários cadastrados.</p>
 
-    <h3>GET /usuarios.php?id=<em>ID</em></h3>
+    <h3>
+      <span class="method">GET</span>
+      <span class="endpoint">/usuarios.php?id=<em>ID</em></span>
+    </h3>
     <p>Obtém os detalhes de um usuário específico.</p>
 
-    <h3>POST /usuarios.php</h3>
+    <h3>
+      <span class="method">POST</span>
+      <span class="endpoint">/usuarios.php</span>
+    </h3>
     <p>Cadastra um novo usuário.</p>
-    <p><strong>Parâmetros (JSON):</strong></p>
+    <p><strong>Parâmetros (JSON body):</strong></p>
     <ul>
-      <li><code>nome</code> (string) - Obrigatório</li>
-      <li><code>email</code> (string) - Obrigatório</li>
-      <li><code>senha</code> (string) - Obrigatório</li>
+      <li><code>nome</code> (string) - <strong>Obrigatório</strong></li>
+      <li><code>email</code> (string) - <strong>Obrigatório</strong></li>
+      <li><code>senha</code> (string) - <strong>Obrigatório</strong></li>
     </ul>
 
-    <h3>PUT /usuarios.php?id=<em>ID</em></h3>
-    <p>Atualiza os dados de um usuário.</p>
-    <p><strong>Parâmetros (JSON):</strong></p>
+    <h3>
+      <span class="method">PUT</span>
+      <span class="endpoint">/usuarios.php?id=<em>ID</em></span>
+    </h3>
+    <p>Atualiza os dados de um usuário existente.</p>
+    <p><strong>Parâmetros (JSON body):</strong></p>
     <ul>
-      <li><code>nome</code> (string) - Obrigatório</li>
-      <li><code>email</code> (string) - Obrigatório</li>
+      <li><code>nome</code> (string) - <strong>Obrigatório</strong></li>
+      <li><code>email</code> (string) - <strong>Obrigatório</strong></li>
     </ul>
 
-    <h3>DELETE /usuarios.php?id=<em>ID</em></h3>
-    <p>Exclui um usuário.</p>
+    <h3>
+      <span class="method">DELETE</span>
+      <span class="endpoint">/usuarios.php?id=<em>ID</em></span>
+    </h3>
+    <p>Exclui um usuário do sistema.</p>
 
     <hr />
 
     <h2>Rotas para Playlists</h2>
 
-    <h3>GET /playlists.php</h3>
-    <p>Lista todas as playlists.</p>
+    <h3>
+      <span class="method">GET</span>
+      <span class="endpoint">/playlists.php</span>
+    </h3>
+    <p>Lista todas as playlists disponíveis.</p>
 
-    <h3>GET /playlists.php?usuario_id=<em>ID</em></h3>
+    <h3>
+      <span class="method">GET</span>
+      <span class="endpoint">/playlists.php?usuario_id=<em>ID</em></span>
+    </h3>
     <p>Lista as playlists de um usuário específico.</p>
 
-    <h3>POST /playlists.php</h3>
+    <h3>
+      <span class="method">POST</span>
+      <span class="endpoint">/playlists.php</span>
+    </h3>
     <p>Cadastra uma nova playlist.</p>
-    <p><strong>Parâmetros (JSON):</strong></p>
+    <p><strong>Parâmetros (JSON body):</strong></p>
     <ul>
-      <li><code>titulo</code> (string) - Obrigatório</li>
+      <li><code>titulo</code> (string) - <strong>Obrigatório</strong></li>
       <li><code>descricao</code> (string) - Opcional</li>
-      <li><code>usuario_id</code> (int) - Obrigatório</li>
+      <li><code>usuario_id</code> (int) - <strong>Obrigatório</strong></li>
     </ul>
 
-    <h3>PUT /playlists.php?id=<em>ID</em></h3>
-    <p>Atualiza os dados de uma playlist.</p>
-    <p><strong>Parâmetros (JSON):</strong></p>
+    <h3>
+      <span class="method">PUT</span>
+      <span class="endpoint">/playlists.php?id=<em>ID</em></span>
+    </h3>
+    <p>Atualiza os dados de uma playlist existente.</p>
+    <p><strong>Parâmetros (JSON body):</strong></p>
     <ul>
-      <li><code>titulo</code> (string) - Obrigatório</li>
-      <li><code>descricao</code> (string) - Obrigatório</li>
+      <li><code>titulo</code> (string) - <strong>Obrigatório</strong></li>
+      <li><code>descricao</code> (string) - Opcional</li>
     </ul>
 
-    <h3>DELETE /playlists.php?id=<em>ID</em></h3>
-    <p>Exclui uma playlist.</p>
+    <h3>
+      <span class="method">DELETE</span>
+      <span class="endpoint">/playlists.php?id=<em>ID</em></span>
+    </h3>
+    <p>Exclui uma playlist do sistema.</p>
 
     <hr />
 
     <h2>Rotas para Músicas</h2>
 
-    <h3>GET /musicas.php?playlist_id=<em>ID</em></h3>
+    <h3>
+      <span class="method">GET</span>
+      <span class="endpoint">/musicas.php?playlist_id=<em>ID</em></span>
+    </h3>
     <p>Lista todas as músicas de uma playlist específica.</p>
 
-    <h3>POST /musicas.php</h3>
+    <h3>
+      <span class="method">POST</span>
+      <span class="endpoint">/musicas.php</span>
+    </h3>
     <p>Adiciona uma música a uma playlist.</p>
-    <p><strong>Parâmetros (JSON):</strong></p>
+    <p><strong>Parâmetros (JSON body):</strong></p>
     <ul>
-      <li><code>titulo</code> (string) - Obrigatório</li>
+      <li><code>titulo</code> (string) - <strong>Obrigatório</strong></li>
       <li><code>artista</code> (string) - Opcional</li>
-      <li><code>link</code> (string) - Obrigatório</li>
-      <li><code>playlist_id</code> (int) - Obrigatório</li>
+      <li><code>link</code> (string) - <strong>Obrigatório</strong></li>
+      <li><code>plataforma</code> (string) - Opcional</li>
+      <li><code>playlist_id</code> (int) - <strong>Obrigatório</strong></li>
     </ul>
 
-    <h3>DELETE /musicas.php?playlist_id=<em>ID</em>&musica_id=<em>ID</em></h3>
-    <p>Remove uma música de uma playlist.</p>
+    <h3>
+      <span class="method">DELETE</span>
+      <span class="endpoint"
+        >/musicas.php?playlist_id=<em>ID</em>&amp;musica_id=<em>ID</em></span
+      >
+    </h3>
+    <p>Remove uma música de uma playlist específica.</p>
+
+    <hr />
+
+    <h2>Observações</h2>
+
+    <ul>
+      <li>
+        Todas as requisições devem ser feitas com o header
+        <code>Content-Type: application/json</code> quando necessário.
+      </li>
+      <li>Os endpoints suportam os métodos HTTP indicados em cada rota.</li>
+      <li>As respostas são retornadas no formato JSON.</li>
+      <li>
+        Códigos de status HTTP são utilizados para indicar o resultado das
+        operações:
+        <ul>
+          <li><strong>200 OK</strong> - Operação bem-sucedida.</li>
+          <li><strong>201 Created</strong> - Recurso criado com sucesso.</li>
+          <li>
+            <strong>400 Bad Request</strong> - Requisição inválida ou parâmetros
+            faltando.
+          </li>
+          <li><strong>404 Not Found</strong> - Recurso não encontrado.</li>
+          <li>
+            <strong>409 Conflict</strong> - Conflito de dados, como duplicidade.
+          </li>
+          <li>
+            <strong>500 Internal Server Error</strong> - Erro no servidor.
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <hr />
+
+    <h2>Exemplos de Requisições</h2>
+
+    <h3>Criar um Novo Usuário</h3>
+    <p><strong>Método:</strong> <code>POST</code></p>
+    <p><strong>URL:</strong> <code>/usuarios.php</code></p>
+    <p><strong>Body:</strong></p>
+    <pre><code>{
+    "nome": "Pedro Santos",
+    "email": "pedro.santos@example.com",
+    "senha": "minha_senha_segura"
+}</code></pre>
+
+    <hr />
+
+    <h3>Listar Playlists de um Usuário</h3>
+    <p><strong>Método:</strong> <code>GET</code></p>
+    <p><strong>URL:</strong> <code>/playlists.php?usuario_id=1</code></p>
+
+    <hr />
+
+    <h3>Adicionar Música a uma Playlist</h3>
+    <p><strong>Método:</strong> <code>POST</code></p>
+    <p><strong>URL:</strong> <code>/musicas.php</code></p>
+    <p><strong>Body:</strong></p>
+    <pre><code>{
+    "titulo": "Lose Yourself",
+    "artista": "Eminem",
+    "link": "https://example.com/loseyourself",
+    "plataforma": "Spotify",
+    "playlist_id": 2
+}</code></pre>
+
+    <hr />
+
+    <h3>Remover Música de uma Playlist</h3>
+    <p><strong>Método:</strong> <code>DELETE</code></p>
+    <p>
+      <strong>URL:</strong>
+      <code>/musicas.php?playlist_id=2&amp;musica_id=5</code>
+    </p>
   </body>
 </html>

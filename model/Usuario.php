@@ -7,11 +7,11 @@ class Usuario
     {
         try {
             $conexao = Conexao::getConexao();
-            $sql = $conexao->prepare("SELECT id, nome, email FROM usuarios");
+            $sql = $conexao->prepare("SELECT id, nome, email, criado_em, atualizado_em, cpf FROM usuarios");
             $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);
-        }  catch (Exception $e) {
-            output(500, ["msg" => $e->getMessage()]);
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao listar usuários: " . $e->getMessage(), 500);
         }
     }
 
@@ -19,11 +19,11 @@ class Usuario
     {
         try {
             $conexao = Conexao::getConexao();
-            $sql = $conexao->prepare("SELECT id, nome, email FROM usuarios WHERE id = ?");
+            $sql = $conexao->prepare("SELECT id, nome, email, criado_em, atualizado_em FROM usuarios WHERE id = ?");
             $sql->execute([$id]);
             return $sql->fetch(PDO::FETCH_ASSOC);
-        }  catch (Exception $e) {
-            output(500, ["msg" => $e->getMessage()]);
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao obter usuário: " . $e->getMessage(), 500);
         }
     }
 
@@ -35,8 +35,12 @@ class Usuario
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
             $sql->execute([$nome, $email, $senhaHash]);
             return $conexao->lastInsertId();
-        }  catch (Exception $e) {
-            output(500, ["msg" => $e->getMessage()]);
+        } catch (PDOException $e) {
+            if ($e->getCode() == '23000') {
+                throw new Exception("Email já cadastrado", 409);
+            } else {
+                throw new Exception("Erro ao criar usuário: " . $e->getMessage(), 500);
+            }
         }
     }
 
@@ -47,9 +51,13 @@ class Usuario
             $sql = $conexao->prepare("UPDATE usuarios SET nome = ?, email = ? WHERE id = ?");
             $sql->execute([$nome, $email, $id]);
             return $sql->rowCount();
-        }  catch (Exception $e) {
-            output(500, ["msg" => $e->getMessage()]);
-        }   
+        } catch (PDOException $e) {
+            if ($e->getCode() == '23000') {
+                throw new Exception("Email já cadastrado", 409);
+            } else {
+                throw new Exception("Erro ao atualizar usuário: " . $e->getMessage(), 500);
+            }
+        }
     }
 
     public static function delete($id)
@@ -59,8 +67,8 @@ class Usuario
             $sql = $conexao->prepare("DELETE FROM usuarios WHERE id = ?");
             $sql->execute([$id]);
             return $sql->rowCount();
-        } catch (Exception $e) {
-            output(500, ["msg" => $e->getMessage()]);
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao excluir usuário: " . $e->getMessage(), 500);
         }
     }
 }
