@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentação do Webservice</title>
+  </head>
+  <body>
+    <h1>Webservice - Playlists</h1>
+
+    <h2>Rotas para Usuários</h2>
+    <h3>GET /usuarios</h3>
+    <p>Lista todos os usuários.</p>
+
+    <h3>POST /usuarios</h3>
+    <p>Criar um novo usuário.</p>
+    <ul>
+      <li><strong>nome:</strong> Nome do usuário (obrigatório).</li>
+      <li><strong>email:</strong> Email do usuário (obrigatório).</li>
+      <li><strong>senha:</strong> Senha do usuário (obrigatório).</li>
+    </ul>
+
+    <h2>Rotas para Playlists</h2>
+    <h3>GET /playlists</h3>
+    <p>Lista todas as playlists.</p>
+
+    <h3>POST /playlists</h3>
+    <p>Cria uma nova playlist.</p>
+    <ul>
+      <li><strong>titulo:</strong> Título da playlist (obrigatório).</li>
+      <li>
+        <strong>usuario_id:</strong> ID do usuário criador da playlist
+        (obrigatório).
+      </li>
+    </ul>
+
+    <h2>Rotas para Músicas</h2>
+    <h3>GET /musicas?playlist_id={id}</h3>
+    <p>Lista todas as músicas de uma playlist específica.</p>
+
+    <h3>POST /musicas</h3>
+    <p>Adiciona uma nova música a uma playlist.</p>
+    <ul>
+      <li><strong>titulo:</strong> Título da música (obrigatório).</li>
+      <li><strong>link:</strong> Link da música (obrigatório).</li>
+    </ul>
+  </body>
+</html>
