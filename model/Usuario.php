@@ -7,7 +7,7 @@ class Usuario
     {
         try {
             $conexao = Conexao::getConexao();
-            $sql = $conexao->prepare("SELECT id, nome, email, criado_em, atualizado_em, cpf FROM usuarios");
+            $sql = $conexao->prepare("SELECT id, nome, email, criado_em, atualizado_em FROM usuarios");
             $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
