@@ -13,10 +13,10 @@ class Conexao
     private function __construct()
     {
         $hostname = 'localhost';
-        $database = 'locadora';
+        $database = 'webservice_playlist';
         $username = 'root';
         $password = 'root';
-        // $password = '';
+        $password = '';
 
         $dsn = "mysql:host=$hostname;dbname=$database";
         $options = [

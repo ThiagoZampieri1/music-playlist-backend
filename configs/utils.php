@@ -1,19 +1,14 @@
 <?php
 
 // Exemplo: valid("POST", ["id", "nome", "ano"]);
-function valid($metodo, $lista)
+function valid($data, $requiredFields)
 {
-    $obtidos = array_keys($metodo);
-    $nao_encontrados = array_diff($lista, $obtidos);
-    if (empty($nao_encontrados)) {
-        foreach ($lista as $p) {
-            if (empty(trim($metodo[$p]))) {
-                return false;
-            }
+    foreach ($requiredFields as $field) {
+        if (!isset($data[$field])) {
+            return false;
         }
-        return true;
     }
-    return false;
+    return true;
 }
 
 // Exemplo: method("PUT");
