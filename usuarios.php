@@ -9,7 +9,6 @@ header("Content-Type: application/json; charset=UTF-8");
 try {
     $data = handleJSONInput();
 
-    // GET: Listar usuários
     if (method("GET")) {
         if (isset($_GET['id'])) {
             $usuario = Usuario::getById($_GET['id']);
@@ -22,19 +21,13 @@ try {
             $usuarios = Usuario::listar();
             output(200, ["usuarios" => $usuarios]);
         }
-    }
-
-    // POST: Criar novo usuário
-    elseif (method("POST")) {
+    } elseif (method("POST")) {
         if (!valid($data, ["nome", "email", "senha"])) {
             throw new Exception("Campos obrigatórios não preenchidos", 400);
         }
         $id = Usuario::insert($data["nome"], $data["email"], $data["senha"]);
         output(201, ["msg" => "Usuário criado com sucesso", "id" => $id]);
-    }
-
-    // PUT: Atualizar usuário
-    elseif (method("PUT")) {
+    } elseif (method("PUT")) {
         if (!isset($_GET['id'])) {
             throw new Exception("ID do usuário não fornecido", 400);
         }
@@ -47,10 +40,7 @@ try {
         } else {
             output(404, ["msg" => "Usuário não encontrado ou dados iguais"]);
         }
-    }
-
-    // DELETE: Excluir usuário
-    elseif (method("DELETE")) {
+    } elseif (method("DELETE")) {
         if (!isset($_GET['id'])) {
             throw new Exception("ID do usuário não fornecido", 400);
         }
@@ -61,11 +51,9 @@ try {
             output(404, ["msg" => "Usuário não encontrado"]);
         }
     } else {
-        // Método não permitido
         output(405, ["msg" => "Método não permitido"]);
     }
 } catch (Exception $e) {
-    // Definir código de status padrão se não estiver definido
     $statusCode = $e->getCode() ?: 500;
     output($statusCode, ["msg" => $e->getMessage()]);
 }
