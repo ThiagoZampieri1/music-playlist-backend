@@ -1,6 +1,5 @@
 <?php
 
-// Exemplo: valid("POST", ["id", "nome", "ano"]);
 function valid($data, $requiredFields)
 {
     foreach ($requiredFields as $field) {
@@ -11,7 +10,6 @@ function valid($data, $requiredFields)
     return true;
 }
 
-// Exemplo: method("PUT");
 function method($metodo)
 {
     if (!strcasecmp($_SERVER['REQUEST_METHOD'], $metodo)) {
@@ -20,7 +18,6 @@ function method($metodo)
     return false;
 }
 
-// Exemplo: output(201, ["msg" => "Cadastrado com sucesso"]);
 function output($codigo, $msg)
 {
     http_response_code($codigo);
@@ -28,7 +25,6 @@ function output($codigo, $msg)
     exit;
 }
 
-// Retorna os dados parseados (se houver JSON na entrada) ou false.
 function handleJSONInput()
 {
     try {
