@@ -38,6 +38,25 @@ try {
 
         Musica::addMusicaNaPlaylist($data["playlist_id"], $musica_id);
         output(201, ["msg" => "Música adicionada à playlist", "id" => $musica_id]);
+    } elseif (method("PUT")) {
+        if (!valid($_GET, ["musica_id"])) {
+            throw new Exception("ID da música é obrigatório", 400);
+        }
+
+        if (!valid($data, ["titulo", "link"])) {
+            throw new Exception("Título e link são obrigatórios", 400);
+        }
+
+        $artista = isset($data["artista"]) ? $data["artista"] : null;
+        $plataforma = isset($data["plataforma"]) ? $data["plataforma"] : null;
+
+        $rows = Musica::update($_GET["musica_id"], $data["titulo"], $artista, $data["link"], $plataforma);
+
+        if ($rows > 0) {
+            output(200, ["msg" => "Música atualizada com sucesso"]);
+        } else {
+            output(404, ["msg" => "Música não encontrada ou dados iguais"]);
+        }
     } elseif (method("DELETE")) {
         if (!valid($_GET, ["playlist_id", "musica_id"])) {
             throw new Exception("IDs da playlist e da música são obrigatórios", 400);

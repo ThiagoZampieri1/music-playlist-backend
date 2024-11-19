@@ -92,4 +92,20 @@ class Musica
             throw new Exception("Erro ao remover música da playlist: " . $e->getMessage(), 500);
         }
     }
+
+    public static function update($id, $titulo, $artista, $link, $plataforma)
+    {
+        try {
+            $conexao = Conexao::getConexao();
+            $sql = $conexao->prepare("
+            UPDATE musicas
+            SET titulo = ?, artista = ?, link = ?, plataforma = ?, atualizado_em = NOW()
+            WHERE id = ?
+        ");
+            $sql->execute([$titulo, $artista, $link, $plataforma, $id]);
+            return $sql->rowCount();
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao atualizar música: " . $e->getMessage(), 500);
+        }
+    }
 }

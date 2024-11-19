@@ -18,8 +18,6 @@ try {
     if (method("GET")) {
         if (isset($_GET['usuario_id'])) {
             $playlists = Playlist::listar($_GET['usuario_id']);
-        } if (isset($_GET['id']) ) {
-            $playlists = Playlist::listar($_GET['id']);
         } else {
             $playlists = Playlist::listar();
         }

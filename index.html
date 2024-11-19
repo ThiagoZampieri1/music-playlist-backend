@@ -198,7 +198,31 @@
         >/musicas.php?playlist_id=<em>ID</em>&amp;musica_id=<em>ID</em></span
       >
     </h3>
+
     <p>Remove uma música de uma playlist específica.</p>
+
+    <h3>
+      <span class="method">PUT</span>
+      <span class="endpoint">/musicas.php?musica_id=<em>ID</em></span>
+    </h3>
+    <p>Edita os dados de uma música existente.</p>
+    <p><strong>Parâmetros (JSON body):</strong></p>
+    <ul>
+      <li><code>titulo</code> (string) - <strong>Obrigatório</strong></li>
+      <li><code>artista</code> (string) - Opcional</li>
+      <li><code>link</code> (string) - <strong>Obrigatório</strong></li>
+      <li><code>plataforma</code> (string) - Opcional</li>
+    </ul>
+    <h4>Exemplo de Requisição:</h4>
+    <p><strong>Método:</strong> <code>PUT</code></p>
+    <p><strong>URL:</strong> <code>/musicas.php?musica_id=7</code></p>
+    <p><strong>Body:</strong></p>
+    <pre><code>{
+  "titulo": "Lose Yourself (Remastered)",
+  "artista": "Eminem",
+  "link": "https://example.com/loseyourself-remastered",
+  "plataforma": "Spotify"
+}</code></pre>
 
     <hr />
 
