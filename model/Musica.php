@@ -98,14 +98,32 @@ class Musica
         try {
             $conexao = Conexao::getConexao();
             $sql = $conexao->prepare("
-            UPDATE musicas
-            SET titulo = ?, artista = ?, link = ?, plataforma = ?, atualizado_em = NOW()
-            WHERE id = ?
-        ");
+                UPDATE musicas
+                SET titulo = ?, artista = ?, link = ?, plataforma = ?, atualizado_em = NOW()
+                WHERE id = ?
+            ");
             $sql->execute([$titulo, $artista, $link, $plataforma, $id]);
             return $sql->rowCount();
         } catch (PDOException $e) {
             throw new Exception("Erro ao atualizar música: " . $e->getMessage(), 500);
+        }
+    }
+
+    // Novo método adicionado para obter playlists que contêm a música
+    public static function getPlaylistsByMusicaId($musica_id)
+    {
+        try {
+            $conexao = Conexao::getConexao();
+            $sql = $conexao->prepare("
+                SELECT p.id, p.titulo, p.descricao, p.usuario_id, p.criado_em, p.atualizado_em
+                FROM playlists p
+                INNER JOIN playlist_musica pm ON p.id = pm.playlist_id
+                WHERE pm.musica_id = ?
+            ");
+            $sql->execute([$musica_id]);
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao obter playlists da música: " . $e->getMessage(), 500);
         }
     }
 }

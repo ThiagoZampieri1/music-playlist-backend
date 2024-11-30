@@ -27,6 +27,18 @@ class Usuario
         }
     }
 
+    public static function getByEmail($email)
+    {
+        try {
+            $conexao = Conexao::getConexao();
+            $sql = $conexao->prepare("SELECT * FROM usuarios WHERE email = ?");
+            $sql->execute([$email]);
+            return $sql->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao obter usuário por email: " . $e->getMessage(), 500);
+        }
+    }
+
     public static function insert($nome, $email, $senha)
     {
         try {
@@ -57,6 +69,19 @@ class Usuario
             } else {
                 throw new Exception("Erro ao atualizar usuário: " . $e->getMessage(), 500);
             }
+        }
+    }
+
+    public static function updatePassword($id, $senha)
+    {
+        try {
+            $conexao = Conexao::getConexao();
+            $sql = $conexao->prepare("UPDATE usuarios SET senha = ? WHERE id = ?");
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+            $sql->execute([$senhaHash, $id]);
+            return $sql->rowCount();
+        } catch (PDOException $e) {
+            throw new Exception("Erro ao atualizar senha do usuário: " . $e->getMessage(), 500);
         }
     }
 

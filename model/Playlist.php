@@ -48,7 +48,7 @@ class Playlist
     {
         try {
             $conexao = Conexao::getConexao();
-            $sql = $conexao->prepare("UPDATE playlists SET titulo = ?, descricao = ? WHERE id = ?");
+            $sql = $conexao->prepare("UPDATE playlists SET titulo = ?, descricao = ?, atualizado_em = NOW() WHERE id = ?");
             $sql->execute([$titulo, $descricao, $id]);
             return $sql->rowCount();
         } catch (PDOException $e) {
