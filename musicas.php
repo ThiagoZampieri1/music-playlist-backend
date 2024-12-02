@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__ . '/configs/utils.php');
 require_once(__DIR__ . '/model/Musica.php');
-require_once(__DIR__ . '/model/Playlist.php'); // Precisamos acessar a Playlist
+require_once(__DIR__ . '/model/Playlist.php'); 
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
@@ -22,14 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 try {
-    // Validar o token JWT e obter o ID do usuário autenticado
     $userId = validateToken();
 
     $data = handleJSONInput();
 
     if (method("GET")) {
         if (isset($_GET['playlist_id'])) {
-            // Verificar se a playlist pertence ao usuário autenticado
             $playlist = Playlist::getById($_GET['playlist_id']);
             if (!$playlist) {
                 throw new Exception("Playlist não encontrada", 404);
@@ -46,8 +44,6 @@ try {
         if (!valid($data, ["titulo", "link", "playlist_id"])) {
             throw new Exception("Título, link e ID da playlist são obrigatórios", 400);
         }
-
-        // Verificar se a playlist pertence ao usuário autenticado
         $playlist = Playlist::getById($data["playlist_id"]);
         if (!$playlist) {
             throw new Exception("Playlist não encontrada", 404);
@@ -76,8 +72,6 @@ try {
         if (!valid($data, ["titulo", "link"])) {
             throw new Exception("Título e link são obrigatórios", 400);
         }
-
-        // Verificar se a música pertence a uma playlist do usuário
         $playlists = Musica::getPlaylistsByMusicaId($_GET["musica_id"]);
         $hasAccess = false;
         foreach ($playlists as $playlist) {
@@ -104,8 +98,6 @@ try {
         if (!valid($_GET, ["playlist_id", "musica_id"])) {
             throw new Exception("IDs da playlist e da música são obrigatórios", 400);
         }
-
-        // Verificar se a playlist pertence ao usuário autenticado
         $playlist = Playlist::getById($_GET["playlist_id"]);
         if (!$playlist) {
             throw new Exception("Playlist não encontrada", 404);
@@ -128,9 +120,6 @@ try {
     output($statusCode, ["msg" => $e->getMessage()]);
 }
 
-/**
- * Função para validar o token JWT
- */
 function validateToken()
 {
     $headers = getallheaders();
@@ -148,8 +137,6 @@ function validateToken()
     try {
         $secretKey = $_ENV['JWT_SECRET'];
         $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
-
-        // Retorna o ID do usuário decodificado do token
         return $decoded->data->userId;
     } catch (Exception $e) {
         throw new Exception("Token inválido: " . $e->getMessage(), 401);

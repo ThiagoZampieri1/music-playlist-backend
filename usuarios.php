@@ -1,8 +1,6 @@
 <?php
 require_once(__DIR__ . '/configs/utils.php');
 require_once(__DIR__ . '/model/Usuario.php');
-
-// Inclua o autoloader do Composer para carregar as bibliotecas JWT e dotenv
 require_once(__DIR__ . '/vendor/autoload.php');
 
 use Firebase\JWT\JWT;
@@ -77,9 +75,6 @@ try {
     output($statusCode, ["msg" => $e->getMessage()]);
 }
 
-/**
- * Função para validar o token JWT
- */
 function validateToken()
 {
     $headers = getallheaders();
@@ -98,7 +93,6 @@ function validateToken()
         $secretKey = $_ENV['JWT_SECRET'];
         $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
 
-        // Retorna o ID do usuário decodificado do token
         return $decoded->data->userId;
     } catch (Exception $e) {
         throw new Exception("Token inválido: " . $e->getMessage(), 401);

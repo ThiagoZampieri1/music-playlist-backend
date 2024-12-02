@@ -1,8 +1,6 @@
 <?php
 require_once(__DIR__ . '/configs/utils.php');
 require_once(__DIR__ . '/model/Playlist.php');
-
-// Inclua o autoloader do Composer e carregue as variáveis de ambiente
 require_once(__DIR__ . '/vendor/autoload.php');
 
 use Firebase\JWT\JWT;
@@ -22,20 +20,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 try {
-    // Validar o token JWT e obter o ID do usuário autenticado
     $userId = validateToken();
 
     $data = handleJSONInput();
 
     if (method("GET")) {
-        // Se um ID de usuário for fornecido, certifique-se de que seja o mesmo do usuário autenticado
         if (isset($_GET['usuario_id'])) {
             if ($_GET['usuario_id'] != $userId) {
                 throw new Exception("Acesso negado: você só pode acessar suas próprias playlists", 403);
             }
             $playlists = Playlist::listar($_GET['usuario_id']);
         } else {
-            // Listar playlists do usuário autenticado
             $playlists = Playlist::listar($userId);
         }
         output(200, ["playlists" => $playlists]);
@@ -44,7 +39,6 @@ try {
             throw new Exception("Título é obrigatório", 400);
         }
         $descricao = isset($data["descricao"]) ? $data["descricao"] : null;
-        // Usar o ID do usuário autenticado
         $id = Playlist::insert($data["titulo"], $descricao, $userId);
         output(201, ["msg" => "Playlist criada com sucesso", "id" => $id]);
     } elseif (method("PUT")) {
@@ -56,7 +50,6 @@ try {
         }
         $descricao = isset($data["descricao"]) ? $data["descricao"] : null;
 
-        // Verificar se a playlist pertence ao usuário autenticado
         $playlist = Playlist::getById($_GET['id']);
         if (!$playlist) {
             throw new Exception("Playlist não encontrada", 404);
@@ -76,7 +69,6 @@ try {
             throw new Exception("ID da playlist não fornecido", 400);
         }
 
-        // Verificar se a playlist pertence ao usuário autenticado
         $playlist = Playlist::getById($_GET['id']);
         if (!$playlist) {
             throw new Exception("Playlist não encontrada", 404);
@@ -99,9 +91,6 @@ try {
     output($statusCode, ["msg" => $e->getMessage()]);
 }
 
-/**
- * Função para validar o token JWT
- */
 function validateToken()
 {
     $headers = getallheaders();
@@ -119,8 +108,6 @@ function validateToken()
     try {
         $secretKey = $_ENV['JWT_SECRET'];
         $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
-
-        // Retorna o ID do usuário decodificado do token
         return $decoded->data->userId;
     } catch (Exception $e) {
         throw new Exception("Token inválido: " . $e->getMessage(), 401);

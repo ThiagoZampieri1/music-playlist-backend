@@ -36,10 +36,9 @@ try {
                 $usuario = Usuario::getByEmail($data["email"]);
 
                 if ($usuario && password_verify($data["senha"], $usuario["senha"])) {
-                    // Gerar um token JWT
+                    
                     $token = generateToken($usuario);
 
-                    // Retornar token e informações do usuário
                     output(200, [
                         "msg" => "Login realizado com sucesso",
                         "token" => $token,
@@ -55,7 +54,6 @@ try {
                 break;
 
             case 'logout':
-                // Implementar lógica de logout se necessário (geralmente no frontend)
                 output(200, ["msg" => "Logout realizado com sucesso"]);
                 break;
 
@@ -70,17 +68,14 @@ try {
     output($statusCode, ["msg" => $e->getMessage()]);
 }
 
-/**
- * Função para gerar um token JWT
- */
 function generateToken($usuario)
 {
     $secretKey = $_ENV['JWT_SECRET'];
     if (!$secretKey || !is_string($secretKey)) {
         throw new Exception("Chave secreta não definida ou inválida", 500);
     }
-    $issuer = 'https://pw2.guilopes.com.br'; // O emissor do token
-    $audience = 'https://pw2.guilopes.com.br'; // O público do token
+    $issuer = 'https://pw2.guilopes.com.br'; 
+    $audience = 'https://pw2.guilopes.com.br';
     $issuedAt = time();
     $notBefore = $issuedAt;
     $expire = $issuedAt + (2 * 60 * 60);
